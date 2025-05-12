@@ -2,7 +2,6 @@ package crr.project.crirodrui.app
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.*
@@ -12,8 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
-import crr.cliente.crirodrui.viewmodels.UsuarioViewModel
+import crr.cliente.crirodrui.viewmodels.UserViewModel
 import crr.project.crirodrui.elements.Rol
 import io.ktor.http.*
 import kotlinx.coroutines.CoroutineScope
@@ -24,7 +22,7 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun RegisterFun() {
     val scope = CoroutineScope(Dispatchers.Default)
-    val viewModel: UsuarioViewModel = koinViewModel()
+    val viewModel: UserViewModel = koinViewModel()
     var succes = viewModel.status.collectAsState()
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }

@@ -1,22 +1,15 @@
 package crr.project.crirodrui
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import crr.cliente.crirodrui.app.LoginForm
-import crr.cliente.crirodrui.app.RegisterForm
-import crr.cliente.crirodrui.viewmodels.UsuarioViewModel
+import crr.cliente.crirodrui.viewmodels.UserViewModel
 import crr.project.crirodrui.app.Principal
-import ies.sequeros.app.Bienvenida
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -29,7 +22,7 @@ fun App() {
             navController = navController, startDestination = "login"
         ) {
             composable("login") {
-                val viewModel: UsuarioViewModel = koinViewModel()
+                val viewModel: UserViewModel = koinViewModel()
                 val state = viewModel.selected.collectAsState()
 
                 var username by remember { mutableStateOf("") }

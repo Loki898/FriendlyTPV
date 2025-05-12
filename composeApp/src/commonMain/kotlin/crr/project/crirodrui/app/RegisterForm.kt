@@ -13,7 +13,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import crr.cliente.crirodrui.viewmodels.UsuarioViewModel
+import crr.cliente.crirodrui.viewmodels.UserViewModel
 import io.ktor.http.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -22,7 +22,7 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun RegisterForm(navController: NavHostController, registerFunction: ((String, String) -> Boolean)? = null) {
     val scope = CoroutineScope(Dispatchers.Default)
-    val viewModel: UsuarioViewModel = koinViewModel()
+    val viewModel: UserViewModel = koinViewModel()
     var succes = viewModel.status.collectAsState()
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }

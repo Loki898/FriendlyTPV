@@ -17,10 +17,11 @@ data class UserState(
     var isLoginError: Boolean = false,
 )
 
-class UsuarioViewModel(private val userRepository: UserRepository) : ViewModel() {
+class UserViewModel(private val userRepository: UserRepository) : ViewModel() {
     var selected = MutableStateFlow(UserState())
     var status = MutableStateFlow(0)
     var users = MutableStateFlow(listOf<User>())
+    var userSelected = MutableStateFlow(User())
 
     init {
         viewModelScope.launch {
@@ -36,7 +37,6 @@ class UsuarioViewModel(private val userRepository: UserRepository) : ViewModel()
 
             if (token != null) {
                 val user = userRepository.getUserByUsername(username)
-               // val posts = userRepository.getPostsByUserId(user.id!!).toMutableList()
                 selected.update {
                     it.copy(
                         token = token, isLoginError = false, isLogged = true, user = user
@@ -52,16 +52,17 @@ class UsuarioViewModel(private val userRepository: UserRepository) : ViewModel()
         }
     }
 
+    fun unSelect() {
+        userSelected.value = User()
+    }
+
+    fun setSelected(user: User) {
+        userSelected = MutableStateFlow(user)
+    }
 
     fun register(username: String, password:String,name:String,role:Rol) {
         viewModelScope.launch {
             status.value = userRepository.addUser(username, password,name,role).value
-            refreshUsers()
-        }
-    }
-    fun registerN(username: String, password:String) {
-        viewModelScope.launch {
-            status.value = userRepository.addUser(username, password,"",Rol.OPERATOR).value
             refreshUsers()
         }
     }

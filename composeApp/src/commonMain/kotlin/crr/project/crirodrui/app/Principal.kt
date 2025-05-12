@@ -20,9 +20,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.window.core.layout.WindowWidthSizeClass
-import crr.cliente.crirodrui.app.RegisterForm
-import crr.cliente.crirodrui.viewmodels.UsuarioViewModel
+import crr.cliente.crirodrui.viewmodels.UserViewModel
 import crr.project.crirodrui.elements.Rol
+import crr.project.crirodrui.users.UserMain
 import ies.sequeros.app.Bienvenida
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -41,7 +41,7 @@ enum class AppDestinations(
 fun Principal(modifier: Modifier = Modifier, salir: () -> Unit) {
     var seleted = remember { mutableStateOf(AppDestinations.HOME) }
     val windowSizeClass = currentWindowAdaptiveInfo().windowSizeClass
-    val vm: UsuarioViewModel = koinViewModel()
+    val vm: UserViewModel = koinViewModel()
     Column(modifier = modifier.fillMaxSize().background(color = MaterialTheme.colorScheme.error)) {
         NavigationSuiteScaffold(
             modifier = Modifier.background(MaterialTheme.colorScheme.error),
@@ -89,7 +89,7 @@ fun Principal(modifier: Modifier = Modifier, salir: () -> Unit) {
                         }
 
                         AppDestinations.PERFIL -> {
-                            Bienvenida()
+                            UserMain()
                         }
 
                         AppDestinations.SALIR -> {
