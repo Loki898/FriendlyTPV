@@ -3,6 +3,7 @@ package crr.cliente.crirodrui.repositorios
 import com.google.gson.JsonParser
 import crr.project.crirodrui.elements.Rol
 import crr.project.crirodrui.elements.User
+import io.github.vinceglb.filekit.core.PickerType
 import io.ktor.client.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
@@ -11,6 +12,7 @@ import io.ktor.http.*
 import io.ktor.serialization.gson.*
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
+import java.io.File
 
 @Serializable
 data class Token(val token: String)
@@ -23,6 +25,14 @@ class UserRepository {
                 serializeNulls()
             }
         }
+    }
+
+    suspend fun getUsers(): List<User> {
+        val usersHTTP = client.get("http://127.0.0.1:8080/") {
+            header("Accept", "application/json")
+        }
+        var users = Json.decodeFromString<List<User>>(usersHTTP.bodyAsText())
+        return users
     }
 
     suspend fun getUserByUsername(username: String): User {
@@ -74,10 +84,12 @@ class UserRepository {
         return false
     }
 
-    suspend fun addUser(username: String, password: String): HttpStatusCode {
+    suspend fun addUser(username: String, password: String,name:String, role:Rol): HttpStatusCode {
+        val token = File("token_actual.txt").readText()
         val response = client.post("http://127.0.0.1:8080/users") {
             contentType(ContentType.Application.Json)
-            setBody(User(username = username, password = password))
+            setBody(User(username = username, password = password,name = name, role = role))
+            bearerAuth(token)
         }
         return response.status
     }

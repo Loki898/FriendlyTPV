@@ -15,6 +15,8 @@ import androidx.navigation.compose.rememberNavController
 import crr.cliente.crirodrui.app.LoginForm
 import crr.cliente.crirodrui.app.RegisterForm
 import crr.cliente.crirodrui.viewmodels.UsuarioViewModel
+import crr.project.crirodrui.app.Principal
+import ies.sequeros.app.Bienvenida
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -52,22 +54,12 @@ fun App() {
                         true
                     }
                 } else {
-                    navController.navigate("principal")
-                    /*Principal(salir = {
+                    Principal(salir = {
                         navController.navigate("login")
-                    })*/
+                    })
                 }
             }
-            composable("principal") {
-                Box(modifier = Modifier.fillMaxSize()) {
-                    Text(
-                        text = "Iniciar Sesión",
-                        style = MaterialTheme.typography.headlineMedium,
-                        modifier = Modifier.padding(bottom = 16.dp)
-                    )
-                }
-            }
-            composable("registro") {
+            /*composable("registro") {
                 val viewModel: UsuarioViewModel = koinViewModel()
 
                 var username by remember { mutableStateOf("") }
@@ -77,10 +69,10 @@ fun App() {
                 RegisterForm(navController) { u, p ->
                     username = u
                     password = p
-                    viewModel.register(username, password)
+                    viewModel.registerN(username, password)
                     true
                 }
-            }
+            }*/
         }
 
     }

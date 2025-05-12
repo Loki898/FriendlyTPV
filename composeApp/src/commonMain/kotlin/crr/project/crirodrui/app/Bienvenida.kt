@@ -18,7 +18,7 @@ import kotlin.coroutines.coroutineContext
 @Composable
 fun Bienvenida() {
     Text(
-        text = "Practica intermodular: DAMgram Cristian Rodríguez Ruiz",
+        text = "FriendlyTPV Pantalla principal",
         style = MaterialTheme.typography.headlineMedium,
         modifier = Modifier.padding(bottom = 32.dp)
     )

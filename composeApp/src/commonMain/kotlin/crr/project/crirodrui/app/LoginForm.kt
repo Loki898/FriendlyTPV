@@ -85,13 +85,13 @@ fun LoginForm(navController: NavHostController, loginFunction: ((String, String)
                     Text("Iniciar Sesión")
                 }
                 Spacer(modifier = Modifier.width(10.dp))
-                Button(
+                /*Button(
                     onClick = {
                         navController.navigate("registro")
                     }
                 ) {
                     Text("Registrarse")
-                }
+                }*/
             }
         }
     }
