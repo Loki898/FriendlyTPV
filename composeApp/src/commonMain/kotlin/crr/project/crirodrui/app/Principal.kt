@@ -9,6 +9,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Logout
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
@@ -52,7 +53,7 @@ fun Principal(modifier: Modifier = Modifier, salir: () -> Unit) {
                          if (it.equals(AppDestinations.ADMINISTRAR)) {
                              if (vm.selected.value.user.role == Rol.ADMIN){
                                  item(icon = {
-                                     androidx.compose.material3.Icon(
+                                     Icon(
                                          imageVector = it.icon,
                                          contentDescription = it.contentDescription,
                                      )
@@ -63,7 +64,7 @@ fun Principal(modifier: Modifier = Modifier, salir: () -> Unit) {
                              }
                          } else {
                              item(icon = {
-                                 androidx.compose.material3.Icon(
+                                 Icon(
                                      imageVector = it.icon,
                                      contentDescription = it.contentDescription,
                                  )
@@ -97,7 +98,7 @@ fun Principal(modifier: Modifier = Modifier, salir: () -> Unit) {
                         }
 
                         AppDestinations.ADMINISTRAR -> {
-                            RegisterFun()
+
                         }
                     }
                 }

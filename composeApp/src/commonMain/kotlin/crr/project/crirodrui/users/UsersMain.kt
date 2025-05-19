@@ -19,6 +19,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import crr.cliente.crirodrui.viewmodels.UserViewModel
+import crr.project.crirodrui.app.RegisterFun
 import crr.project.crirodrui.elements.User
 import ies.sequeros.app.Bienvenida
 import org.example.damgramclient.ui.posts.UserItem
@@ -71,7 +72,11 @@ fun UserMain(
                         modifier = Modifier
 
                     ) {
-                        Bienvenida()
+                        RegisterFun(
+                            selected = selected.user,
+                            expandido = isListAndDetailVisible,
+                            atras = { navigator.navigateTo(ListDetailPaneScaffoldRole.List) }
+                        )
                     }
 
                 })

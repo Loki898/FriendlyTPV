@@ -2,6 +2,7 @@ package crr.project.crirodrui.app
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowLeft
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.*
@@ -13,6 +14,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import crr.cliente.crirodrui.viewmodels.UserViewModel
 import crr.project.crirodrui.elements.Rol
+import crr.project.crirodrui.elements.User
 import io.ktor.http.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -20,9 +22,13 @@ import org.koin.compose.viewmodel.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RegisterFun() {
+fun RegisterFun(
+    viewModel: UserViewModel = koinViewModel(),
+    expandido:Boolean,
+    atras:()->Unit,
+    selected: User?
+) {
     val scope = CoroutineScope(Dispatchers.Default)
-    val viewModel: UserViewModel = koinViewModel()
     var succes = viewModel.status.collectAsState()
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -34,6 +40,14 @@ fun RegisterFun() {
     var showDialog by remember { mutableStateOf(false) }
     var enabledButton = username.isNotBlank() && password.isNotBlank()
 
+    if (!expandido) {
+        Button(onClick = {
+            viewModel.unSelect()
+            atras()
+        }) {
+            Icon(Icons.Filled.ArrowLeft, contentDescription = "atras")
+        }
+    }
     Box(
         modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
     ) {
@@ -46,6 +60,13 @@ fun RegisterFun() {
                 style = MaterialTheme.typography.headlineMedium,
                 modifier = Modifier.padding(bottom = 16.dp),
             )
+            if (selected != null){
+                username = selected.username
+                password = selected.password
+                confirmation = selected.password
+                name = selected.name
+                selectedRol = selected.role
+            }
             if (succes.value >= 400) {
                 AlertDialog(
                     onDismissRequest = { showDialog = false },

@@ -40,11 +40,11 @@ fun UserItem(
     vmUser: UserViewModel = koinViewModel(),
     userRep: UserRepository = UserRepository()
 ) {
+
     Box(
-        modifier = Modifier.size(width = 400.dp, height = 600.dp)
-            .border(2.dp, MaterialTheme.colorScheme.primary, RectangleShape).background(Color.LightGray).clickable {
-                println("Hola")
-            },
+        modifier =Modifier.size(150.dp, 50.dp).border(2.dp, MaterialTheme.colorScheme.primary, RectangleShape).background(Color.LightGray).clickable {
+            vm.selected.value.user = item
+        },
         contentAlignment = Alignment.Center,
     ) {
         Column(
