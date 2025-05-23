@@ -42,6 +42,7 @@ class UserViewModel(private val userRepository: UserRepository) : ViewModel() {
                         token = token, isLoginError = false, isLogged = true, user = user
                     )
                 }
+                userSelected.value = user
             } else {
                 selected.update {
                     it.copy(
@@ -53,17 +54,25 @@ class UserViewModel(private val userRepository: UserRepository) : ViewModel() {
     }
 
     fun unSelect() {
+        //selected.update { it.copy(user = User()) }
         userSelected.value = User()
     }
 
     fun setSelected(user: User) {
-        userSelected = MutableStateFlow(user)
+        //selected.update { it.copy(user = user) }
+        userSelected.value = user
     }
 
     fun register(username: String, password:String,name:String,role:Rol) {
         viewModelScope.launch {
             status.value = userRepository.addUser(username, password,name,role).value
             refreshUsers()
+        }
+    }
+    fun deleteUser(id: String){
+        viewModelScope.launch {
+            val eliminado = userRepository.deleteUser(id)
+            users.value = users.value.filter { it.id != id }
         }
     }
 

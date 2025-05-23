@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AdminPanelSettings
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Logout
 import androidx.compose.material.icons.filled.Person
@@ -33,7 +34,7 @@ enum class AppDestinations(
     HOME("Inicio", Icons.Default.Home, "Inicio", true), PERFIL(
         "Perfil", Icons.Filled.Person, "Perfil", true
     ),
-    ADMINISTRAR("Usuarios", Icons.Default.Person, "Usuarios", true),
+    ADMINISTRAR("Administrador", Icons.Default.AdminPanelSettings, "Usuarios", true),
     SALIR("Salir", Icons.Filled.Logout, "Salir", true),
 
 }
@@ -90,7 +91,7 @@ fun Principal(modifier: Modifier = Modifier, salir: () -> Unit) {
                         }
 
                         AppDestinations.PERFIL -> {
-                            UserMain()
+                            Bienvenida()
                         }
 
                         AppDestinations.SALIR -> {
@@ -98,15 +99,11 @@ fun Principal(modifier: Modifier = Modifier, salir: () -> Unit) {
                         }
 
                         AppDestinations.ADMINISTRAR -> {
-
+                            UserMain()
                         }
                     }
                 }
             }
         }
     }
-}
-@Composable
-fun Ejemplo(){
-    Text("Pa ti mi cola")
 }

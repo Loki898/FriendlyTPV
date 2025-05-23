@@ -40,6 +40,22 @@ fun RegisterFun(
     var showDialog by remember { mutableStateOf(false) }
     var enabledButton = username.isNotBlank() && password.isNotBlank()
 
+    LaunchedEffect(selected) {
+        if (selected != null) {
+            username = selected.username
+            password = ""
+            confirmation = ""
+            name = selected.name
+            selectedRol = selected.role
+        } else {
+            // Si no hay usuario seleccionado, limpiar el formulario
+            username = ""
+            password = ""
+            confirmation = ""
+            name = ""
+            selectedRol = Rol.OPERATOR
+        }
+    }
     if (!expandido) {
         Button(onClick = {
             viewModel.unSelect()
@@ -49,7 +65,7 @@ fun RegisterFun(
         }
     }
     Box(
-        modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
+        modifier = Modifier, contentAlignment = Alignment.Center
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -58,15 +74,9 @@ fun RegisterFun(
             Text(
                 text = "Registrar",
                 style = MaterialTheme.typography.headlineMedium,
-                modifier = Modifier.padding(bottom = 16.dp),
+                modifier = Modifier.padding(bottom = 16.dp).align(Alignment.CenterHorizontally),
             )
-            if (selected != null){
-                username = selected.username
-                password = selected.password
-                confirmation = selected.password
-                name = selected.name
-                selectedRol = selected.role
-            }
+
             if (succes.value >= 400) {
                 AlertDialog(
                     onDismissRequest = { showDialog = false },

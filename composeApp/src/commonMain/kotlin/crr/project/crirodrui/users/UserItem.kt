@@ -14,6 +14,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -37,21 +38,32 @@ import kotlin.io.encoding.ExperimentalEncodingApi
 fun UserItem(
     item: User,
     vm: UserViewModel = koinViewModel(),
+    onClick:() -> Unit,
     vmUser: UserViewModel = koinViewModel(),
     userRep: UserRepository = UserRepository()
 ) {
-
-    Box(
+    /*Box(
         modifier =Modifier.size(150.dp, 50.dp).border(2.dp, MaterialTheme.colorScheme.primary, RectangleShape).background(Color.LightGray).clickable {
-            vm.selected.value.user = item
+            vm.setSelected(item)
         },
         contentAlignment = Alignment.Center,
-    ) {
-        Column(
-            modifier = Modifier.padding(all = 10.dp)
+    ) {*/
+        Row(
+            modifier = Modifier.clickable {
+                vm.setSelected(item)
+                onClick()
+            }
         ) {
             Text("User : ${item.username}")
+            IconButton(
+                    onClick = {
+                        item.id?.let { vm.deleteUser(it) }
+                    }, modifier = Modifier.size(48.dp)
+            ){
+            Icon(Icons.Filled.Favorite, contentDescription = "")
         }
+        }
+
         //val imagenString = item.image
 
         /*Column(modifier = Modifier.wrapContentSize()) {
@@ -64,8 +76,8 @@ fun UserItem(
         Spacer(modifier = Modifier.height(8.dp))
     }*/
     }
-Spacer(modifier = Modifier.height(8.dp))
-}
+//Spacer(modifier = Modifier.height(8.dp))
+//}
 
 
 fun timestampToDate(timestamp: Long): String {

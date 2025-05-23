@@ -94,6 +94,16 @@ class UserRepository {
         return response.status
     }
 
+    suspend fun deleteUser(id: String):HttpStatusCode {
+        val token = File("token_actual.txt").readText()
+        println(id)
+        val response = client.post("http://127.0.0.1:8080/user/delete/$id"){
+            bearerAuth(token)
+            contentType(ContentType.Application.Json)
+        }
+        return response.status
+    }
+
     suspend fun getUserById(userId: String): User {
         val user = User()
         val response: HttpResponse = client.get("http://127.0.0.1:8080/users/$userId") {
