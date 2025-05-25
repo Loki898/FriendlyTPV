@@ -10,6 +10,7 @@ import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.serialization.gson.*
+import io.ktor.util.*
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import java.io.File
@@ -18,6 +19,7 @@ import java.io.File
 data class Token(val token: String)
 
 class UserRepository {
+    val urlbase="http://127.0.0.1:8080/"
     val client = HttpClient {
         install(ContentNegotiation) {
             gson {

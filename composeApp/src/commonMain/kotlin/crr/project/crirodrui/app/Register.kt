@@ -26,7 +26,8 @@ fun RegisterFun(
     viewModel: UserViewModel = koinViewModel(),
     expandido:Boolean,
     atras:()->Unit,
-    selected: User?
+    selected: User?,
+    editing:Boolean,
 ) {
     val scope = CoroutineScope(Dispatchers.Default)
     var succes = viewModel.status.collectAsState()
@@ -39,7 +40,9 @@ fun RegisterFun(
     var isPasswordVisible by remember { mutableStateOf(false) }
     var showDialog by remember { mutableStateOf(false) }
     var enabledButton = username.isNotBlank() && password.isNotBlank()
-
+    val editreg = remember(editing) {
+        if (editing) "Editando" else "Registrar"
+    }
     LaunchedEffect(selected) {
         if (selected != null) {
             username = selected.username
@@ -47,6 +50,7 @@ fun RegisterFun(
             confirmation = ""
             name = selected.name
             selectedRol = selected.role
+
         } else {
             // Si no hay usuario seleccionado, limpiar el formulario
             username = ""
@@ -56,6 +60,7 @@ fun RegisterFun(
             selectedRol = Rol.OPERATOR
         }
     }
+
     if (!expandido) {
         Button(onClick = {
             viewModel.unSelect()
@@ -72,7 +77,7 @@ fun RegisterFun(
             verticalArrangement = Arrangement.Center,
         ) {
             Text(
-                text = "Registrar",
+                text = editreg,
                 style = MaterialTheme.typography.headlineMedium,
                 modifier = Modifier.padding(bottom = 16.dp).align(Alignment.CenterHorizontally),
             )
@@ -228,7 +233,11 @@ fun RegisterFun(
                 }, enabled = enabledButton
 
             ) {
-                Text("Registrarse")
+                if (editing){
+                    Text("Actualizar")
+                } else {
+                    Text("Registrar")
+                }
             }
         }
     }

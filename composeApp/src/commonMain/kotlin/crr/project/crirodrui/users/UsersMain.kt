@@ -37,6 +37,8 @@ fun UserMain(
     val navigator = rememberListDetailPaneScaffoldNavigator<User>()
     val elementos by vm.users.collectAsState()
     val selected by vm.userSelected.collectAsState()
+    //var editing by remember { mutableStateOf(false) }
+    val editing = selected.id?.isNotBlank() ?: false
     val isListAndDetailVisible =
         navigator.scaffoldValue[ListDetailPaneScaffoldRole.Detail] == PaneAdaptedValue.Expanded &&
                 navigator.scaffoldValue[ListDetailPaneScaffoldRole.List] == PaneAdaptedValue.Expanded
@@ -48,6 +50,7 @@ fun UserMain(
                 vm.unSelect()
                 nav.value = 1
                 navigator.navigateTo(ListDetailPaneScaffoldRole.Detail)
+
             }) {
                 Icon(Icons.Default.Add, contentDescription = "Add")
             }
@@ -92,7 +95,8 @@ fun UserMain(
                             RegisterFun(
                                 selected = selected,
                                 expandido = isListAndDetailVisible,
-                                atras = { navigator.navigateTo(ListDetailPaneScaffoldRole.List) }
+                                atras = { navigator.navigateTo(ListDetailPaneScaffoldRole.List) },
+                               editing = editing
                             )
                         }
                     }

@@ -19,7 +19,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.graphics.toPainter
 import androidx.compose.ui.unit.dp
 import crr.cliente.crirodrui.repositorios.UserRepository
 import crr.cliente.crirodrui.viewmodels.UserViewModel
