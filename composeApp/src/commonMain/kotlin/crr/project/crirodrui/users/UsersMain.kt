@@ -58,14 +58,13 @@ fun UserMain(
     }) { innerPadding ->
         Column(modifier = modifier.padding(innerPadding)) {
             ListDetailPaneScaffold(
-                modifier = Modifier,
+                modifier = Modifier.align(Alignment.CenterHorizontally),
                 directive = navigator.scaffoldDirective,
                 value = navigator.scaffoldValue,
                 listPane = {
                     Box(
                         modifier = Modifier
-                            .fillMaxHeight()
-                            .weight(1f)
+                            .fillMaxSize()
                     ) {
                         LazyColumn(
                             modifier = Modifier
@@ -85,8 +84,7 @@ fun UserMain(
                 detailPane = {
                     Box(
                         modifier = Modifier
-                            .fillMaxHeight()
-                            .weight(1f),
+                            .fillMaxSize(),
                         contentAlignment = Alignment.TopStart,
                     ) {
                         Column(

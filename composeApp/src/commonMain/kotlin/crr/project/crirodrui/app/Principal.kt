@@ -6,10 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AdminPanelSettings
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Logout
-import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -24,6 +21,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.window.core.layout.WindowWidthSizeClass
 import crr.cliente.crirodrui.viewmodels.UserViewModel
 import crr.project.crirodrui.elements.Rol
+import crr.project.crirodrui.products.CategoryMain
 import crr.project.crirodrui.users.UserMain
 import ies.sequeros.app.Bienvenida
 import org.koin.compose.viewmodel.koinViewModel
@@ -32,9 +30,9 @@ enum class AppDestinations(
     val label: String, val icon: ImageVector, val contentDescription: String, val visibleCompact: Boolean
 ) {
     HOME("Inicio", Icons.Default.Home, "Inicio", true), PERFIL(
-        "Perfil", Icons.Filled.Person, "Perfil", true
+        "Productos", Icons.Filled.Inventory, "Gestión de productos", true
     ),
-    ADMINISTRAR("Administrador", Icons.Default.AdminPanelSettings, "Usuarios", true),
+    ADMINISTRAR("Usuarios", Icons.Default.AdminPanelSettings, "Usuarios", true),
     SALIR("Salir", Icons.Filled.Logout, "Salir", true),
 
 }
@@ -91,7 +89,7 @@ fun Principal(modifier: Modifier = Modifier, salir: () -> Unit) {
                         }
 
                         AppDestinations.PERFIL -> {
-                            Bienvenida()
+                            CategoryMain()
                         }
 
                         AppDestinations.SALIR -> {

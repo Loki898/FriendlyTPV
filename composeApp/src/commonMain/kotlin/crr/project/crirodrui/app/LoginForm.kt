@@ -48,6 +48,7 @@ fun LoginForm(navController: NavHostController, loginFunction: ((String, String)
                 modifier = Modifier.padding(bottom = 16.dp)
             )
 
+
             OutlinedTextField(
                 value = username,
                 onValueChange = { username = it },
@@ -85,13 +86,6 @@ fun LoginForm(navController: NavHostController, loginFunction: ((String, String)
                     Text("Iniciar Sesión")
                 }
                 Spacer(modifier = Modifier.width(10.dp))
-                /*Button(
-                    onClick = {
-                        navController.navigate("registro")
-                    }
-                ) {
-                    Text("Registrarse")
-                }*/
             }
         }
     }
