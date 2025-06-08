@@ -49,6 +49,7 @@ fun CategoryItem(
             Text(text = "User : ${item.nombre}", modifier = Modifier.padding(5.dp))
             IconButton(
                 onClick = {
+                    vm.deleteCategory(item)
                 }, modifier = Modifier.size(48.dp)
             ) {
                 Icon(Icons.Filled.Delete, contentDescription = "")
@@ -56,11 +57,4 @@ fun CategoryItem(
         }
     }
     Spacer(modifier = Modifier.height(8.dp))
-}
-
-
-fun timestampToDate(timestamp: Long): String {
-    val instant = Instant.ofEpochSecond(timestamp / 1000)
-    val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss").withZone(ZoneId.systemDefault())
-    return formatter.format(instant)
 }

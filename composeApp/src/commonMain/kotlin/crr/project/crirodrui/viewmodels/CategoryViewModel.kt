@@ -8,6 +8,7 @@ import crr.project.crirodrui.elements.Producto
 import crr.project.crirodrui.elements.Rol
 import crr.project.crirodrui.elements.User
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.io.File
@@ -46,12 +47,25 @@ class CategoryViewModel(private val categoryRepository: CategoryRepository) : Vi
             refreshCategories()
         }
     }
-    fun deleteUser(id: Int){
+
+    fun deleteCategory(category: Category) {
         viewModelScope.launch {
-            val eliminado = categoryRepository.deleteUser(id.toString())
-            categories.value = categories.value.filter { it.id_category != id }
+            categoryRepository.deleteCategory(category)
+            unSelect()
+            refreshCategories()
         }
     }
+
+    fun setSelectedByName(name:String) {
+        categories.value.firstOrNull{
+            it.nombre == name
+        }?.let {
+            setSelected(
+                it
+            )
+        }
+    }
+
 
     fun reloadStatus(){
         status.value = 0

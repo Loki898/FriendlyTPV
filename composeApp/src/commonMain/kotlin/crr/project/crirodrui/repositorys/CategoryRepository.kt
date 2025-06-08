@@ -35,6 +35,14 @@ class CategoryRepository {
         return categories
     }
 
+    suspend fun deleteCategory(category: Category): Boolean {
+        val token = File("token_actual.txt").readText()
+        val response = client.post("http://127.0.0.1:8080/category/delete/${category.id_category}") {
+            header("Accept", "application/json")
+            //bearerAuth(token)
+        }
+        return response.status == HttpStatusCode.OK
+    }
     suspend fun getProducts(id_categoria:Int):List<Producto>{
         val productosHTTP= client.get("http://127.0.0.1:8080/products/category/$id_categoria") {
             header("Accept", "application/json")

@@ -56,6 +56,16 @@ class ProductRepository {
         }
         return response.status
     }
+    suspend fun addProduct(nombre:String,descripcion:String, precio: Double, stock:Int, tipo_iva:Int, categoria:Int): HttpStatusCode {
+        val token = File("token_actual.txt").readText()
+        val response = client.post("http://127.0.0.1:8080/categories") {
+            contentType(ContentType.Application.Json)
+            setBody(Category(nombre = nombre))
+            bearerAuth(token)
+        }
+        return response.status
+    }
+
 
 
 }

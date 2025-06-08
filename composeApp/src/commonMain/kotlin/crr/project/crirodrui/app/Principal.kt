@@ -32,6 +32,9 @@ enum class AppDestinations(
     HOME("Inicio", Icons.Default.Home, "Inicio", true), PERFIL(
         "Productos", Icons.Filled.Inventory, "Gestión de productos", true
     ),
+    TPV(
+        "TPV", Icons.Filled.Inventory, "TPV", true
+    ),
     ADMINISTRAR("Usuarios", Icons.Default.AdminPanelSettings, "Usuarios", true),
     SALIR("Salir", Icons.Filled.Logout, "Salir", true),
 
@@ -86,6 +89,10 @@ fun Principal(modifier: Modifier = Modifier, salir: () -> Unit) {
                     when (seleted.value) {
                         AppDestinations.HOME -> {
                             Bienvenida()
+                        }
+
+                        AppDestinations.TPV -> {
+                            tpv()
                         }
 
                         AppDestinations.PERFIL -> {

@@ -5,6 +5,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.ArrowLeft
 import androidx.compose.material3.*
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
 import androidx.compose.material3.adaptive.layout.ListDetailPaneScaffold
@@ -36,20 +37,20 @@ fun CategoryMain(
 
     val editing = selected.id?.isNotBlank() ?: false
     val searchview = navigator.scaffoldValue[ListDetailPaneScaffoldRole.List] == PaneAdaptedValue.Expanded
-
+    val isListAndDetailVisible =
+        navigator.scaffoldValue[ListDetailPaneScaffoldRole.Detail] == PaneAdaptedValue.Expanded &&
+                navigator.scaffoldValue[ListDetailPaneScaffoldRole.List] == PaneAdaptedValue.Expanded
     var isAddingCategory by remember { mutableStateOf(false) }
     var isAddingProduct by remember { mutableStateOf(false) }
     var showDialog by remember { mutableStateOf(false) }
 
     Scaffold(
         floatingActionButton = {
-            if (searchview) {
                 FloatingActionButton(onClick = {
                     showDialog = true
                 }) {
                     Icon(Icons.Default.Add, contentDescription = "Add")
                 }
-            }
         }
     ) { innerPadding ->
         Column(modifier = modifier.padding(innerPadding)) {
@@ -119,11 +120,22 @@ fun CategoryMain(
                             }
                         },
                         detailPane = {
-                            LazyColumn(modifier = Modifier.fillMaxSize()) {
-                                items(products.size) {
-                                    ProductItem(products[it])
+                            Column {
+                                if (!isListAndDetailVisible) {
+                                    Button(onClick = {
+                                        vm.unSelect()
+                                        navigator.navigateTo(ListDetailPaneScaffoldRole.List)
+                                    }) {
+                                        Icon(Icons.Filled.ArrowLeft, contentDescription = "atras")
+                                    }
+                                }
+                                LazyColumn(modifier = Modifier.fillMaxSize()) {
+                                    items(products.size) {
+                                        ProductItem(products[it])
+                                    }
                                 }
                             }
+
                         }
                     )
                 }
@@ -210,7 +222,7 @@ fun AddProductForm(onCancel: () -> Unit, onSave: (Producto) -> Unit) {
             onExpandedChange = { expanded = !expanded }
         ) {
             OutlinedTextField(
-                value = vm.categories.value.get(0).nombre,
+                value = categoria,
                 onValueChange = {},
                 readOnly = true,
                 label = { Text("Categoría") },
@@ -227,7 +239,7 @@ fun AddProductForm(onCancel: () -> Unit, onSave: (Producto) -> Unit) {
                     DropdownMenuItem(
                         text = { Text(category.nombre) },
                         onClick = {
-                            categoria = category.id_category.toString()
+                            categoria = category.nombre
                             expanded = false
                         }
                     )
@@ -238,17 +250,7 @@ fun AddProductForm(onCancel: () -> Unit, onSave: (Producto) -> Unit) {
 
         Row {
             Button(onClick = {
-                onSave(
-                    Producto(
-                        nombre = nombre,
-                        descripcion = descripcion,
-                        precio = precio.toDoubleOrNull() ?: 0.0,
-                        id_producto = TODO(),
-                        stock = TODO(),
-                        tipo_iva = TODO(),
-                        categoria = TODO()
-                    )
-                )
+
             }) {
                 Text("Guardar")
             }

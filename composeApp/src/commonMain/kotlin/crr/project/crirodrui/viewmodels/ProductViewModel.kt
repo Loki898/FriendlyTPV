@@ -38,18 +38,13 @@ class ProductViewModel(private val categoryRepository: CategoryRepository) : Vie
         selected.value = product
     }
 
-    fun addCategory(nombre:String) {
+    fun addProduct(nombre:String,descripcion:String, precio: Double, stock:Int, tipo_iva:Int, categoria:Int) {
         viewModelScope.launch {
             categoryRepository.addCategory(nombre)
             refreshCategories()
         }
     }
-    fun deleteUser(id: Int){
-        viewModelScope.launch {
-            val eliminado = categoryRepository.deleteUser(id.toString())
-            categories.value = categories.value.filter { it.id_category != id }
-        }
-    }
+
 
     fun reloadStatus(){
         status.value = 0
