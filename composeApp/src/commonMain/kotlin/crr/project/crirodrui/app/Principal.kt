@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.window.core.layout.WindowWidthSizeClass
 import crr.cliente.crirodrui.viewmodels.UserViewModel
+import crr.project.crirodrui.App
 import crr.project.crirodrui.elements.Rol
 import crr.project.crirodrui.products.CategoryMain
 import crr.project.crirodrui.users.UserMain
@@ -29,13 +30,18 @@ import org.koin.compose.viewmodel.koinViewModel
 enum class AppDestinations(
     val label: String, val icon: ImageVector, val contentDescription: String, val visibleCompact: Boolean
 ) {
-    HOME("Inicio", Icons.Default.Home, "Inicio", true), PERFIL(
+    HOME("Inicio", Icons.Default.Home, "Inicio", true),TPV(
+        "TPV", Icons.Filled.Receipt, "TPV", true
+    ), PRODUCTS(
         "Productos", Icons.Filled.Inventory, "Gestión de productos", true
-    ),
-    TPV(
-        "TPV", Icons.Filled.Inventory, "TPV", true
+    ),RESTAURANT("Editor del restaurante", Icons.Default.Edit,"Editor del restaurante", true),
+    FACTURAS(
+        "Histórico de facturas", Icons.Filled.ListAlt, "Listado de las facturas", true
     ),
     ADMINISTRAR("Usuarios", Icons.Default.AdminPanelSettings, "Usuarios", true),
+    USUARIO(
+        "Usuario", Icons.Filled.Inventory, "Información del usuario actual", true
+    ),
     SALIR("Salir", Icons.Filled.Logout, "Salir", true),
 
 }
@@ -52,7 +58,7 @@ fun Principal(modifier: Modifier = Modifier, salir: () -> Unit) {
 
                 AppDestinations.entries.forEach {
                     if (windowSizeClass.windowWidthSizeClass != WindowWidthSizeClass.COMPACT || it.visibleCompact == true) {
-                         if (it.equals(AppDestinations.ADMINISTRAR)) {
+                         if (it.equals(AppDestinations.ADMINISTRAR) or it.equals(AppDestinations.PRODUCTS) or it.equals(AppDestinations.RESTAURANT)) {
                              if (vm.selected.value.user.role == Rol.ADMIN){
                                  item(icon = {
                                      Icon(
@@ -95,8 +101,20 @@ fun Principal(modifier: Modifier = Modifier, salir: () -> Unit) {
                             tpv()
                         }
 
-                        AppDestinations.PERFIL -> {
+                        AppDestinations.RESTAURANT->{
+                            TableEditorScreen()
+                        }
+
+                        AppDestinations.PRODUCTS -> {
                             CategoryMain()
+                        }
+
+                        AppDestinations.FACTURAS ->{
+                            HistoricoFacturas()
+                        }
+
+                        AppDestinations.USUARIO->{
+                            Usuario()
                         }
 
                         AppDestinations.SALIR -> {

@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.*
@@ -13,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import crr.cliente.crirodrui.repositorios.UserRepository
 import crr.cliente.crirodrui.viewmodels.CategoryViewModel
@@ -26,7 +28,7 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import kotlin.io.encoding.ExperimentalEncodingApi
 
-@OptIn(ExperimentalEncodingApi::class)
+/*@OptIn(ExperimentalEncodingApi::class)
 @Composable
 fun ProductItem(
     item: Producto,
@@ -41,4 +43,35 @@ fun ProductItem(
         }
     }
     Spacer(modifier = Modifier.height(8.dp))
+}*/
+@Composable
+fun ProductItem(
+    item: Producto,
+    vm: CategoryViewModel = koinViewModel()
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 8.dp, vertical = 4.dp)
+            .background(Color.LightGray, shape = RoundedCornerShape(8.dp))
+            .padding(horizontal = 12.dp, vertical = 8.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = "Producto: ${item.nombre ?: "Sin nombre"}",
+            fontWeight = FontWeight.Bold,
+            color = Color.Black
+        )
+
+        IconButton(onClick = {
+            // Por ahora no hace nada
+        }) {
+            Icon(
+                imageVector = Icons.Filled.Delete,
+                contentDescription = "Eliminar producto",
+                tint = Color.Black
+            )
+        }
+    }
 }

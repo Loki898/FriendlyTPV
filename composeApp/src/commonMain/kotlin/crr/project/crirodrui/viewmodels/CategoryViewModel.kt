@@ -74,6 +74,8 @@ class CategoryViewModel(private val categoryRepository: CategoryRepository) : Vi
         status.value = -1
     }
 
+
+
     private fun refreshUsers(){
         viewModelScope.launch {
             categories.value = categoryRepository.getCategories()
@@ -88,6 +90,7 @@ class CategoryViewModel(private val categoryRepository: CategoryRepository) : Vi
     private fun refreshCategories(){
         viewModelScope.launch {
             categories.value=categoryRepository.getCategories()
+            refreshProducts()
         }
     }
 }

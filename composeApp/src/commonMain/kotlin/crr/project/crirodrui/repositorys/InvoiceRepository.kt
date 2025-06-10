@@ -1,10 +1,7 @@
 package crr.cliente.crirodrui.repositorios
 
 import com.google.gson.JsonParser
-import crr.project.crirodrui.elements.Category
-import crr.project.crirodrui.elements.Producto
-import crr.project.crirodrui.elements.Rol
-import crr.project.crirodrui.elements.User
+import crr.project.crirodrui.elements.*
 import io.github.vinceglb.filekit.core.PickerType
 import io.ktor.client.*
 import io.ktor.client.plugins.contentnegotiation.*
@@ -17,7 +14,7 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import java.io.File
 
-class ProductRepository {
+class InvoiceRepository {
     val client = HttpClient {
         install(ContentNegotiation) {
             gson {
@@ -27,13 +24,14 @@ class ProductRepository {
         }
     }
 
-    suspend fun getProducts(id_categoria:Int):List<Producto>{
-        val productosHTTP= client.get("http://127.0.0.1:8080/products/category/$id_categoria") {
+    suspend fun getInvoices():List<Invoice>{
+        val invoicesHTTP= client.get("http://127.0.0.1:8080/invoices") {
             header("Accept", "application/json")
         }
-        if(productosHTTP.bodyAsText().isNotEmpty() ){
-            var productos = Json.decodeFromString<List<Producto>>(productosHTTP.bodyAsText())
-            return productos
+        if(invoicesHTTP.bodyAsText().isNotEmpty() ){
+            var invoices = Json.decodeFromString<List<Invoice>>(invoicesHTTP.bodyAsText())
+            println(invoices)
+            return invoices
         }else{
             return listOf()
         }

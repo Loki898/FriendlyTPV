@@ -7,7 +7,7 @@ import org.koin.compose.KoinApplication
 fun main() = application {
     Window(
         onCloseRequest = ::exitApplication,
-        title = "FriendlyTPV",
+        title = "FriendlyTPV (Alpha)",
     ) {
         KoinApplication(application = {
             modules(appModule)
