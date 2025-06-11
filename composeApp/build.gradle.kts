@@ -66,6 +66,12 @@ kotlin {
             implementation("io.github.vinceglb:filekit-core:0.8.8")
             // Enables FileKit with Composable utilities
             implementation("io.github.vinceglb:filekit-compose:0.8.8")
+
+            // Lector pdf
+            implementation("org.apache.pdfbox:pdfbox:2.0.29")
+            //QR
+            implementation("com.google.zxing:core:3.5.0")
+            implementation("com.google.zxing:javase:3.5.0")
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)

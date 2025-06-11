@@ -9,6 +9,7 @@ import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.serialization.gson.*
+import io.ktor.serialization.kotlinx.json.*
 import io.ktor.util.*
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
@@ -17,10 +18,10 @@ import java.io.File
 class InvoiceRepository {
     val client = HttpClient {
         install(ContentNegotiation) {
-            gson {
-                setPrettyPrinting()
-                serializeNulls()
-            }
+            json(Json {
+                prettyPrint = true
+                ignoreUnknownKeys = true
+            })
         }
     }
 
@@ -35,6 +36,16 @@ class InvoiceRepository {
         }else{
             return listOf()
         }
+    }
+
+    suspend fun sendInvoice(invoice: Invoice): HttpStatusCode {
+        val token = File("token_actual.txt").readText()
+        val response = client.post("http://127.0.0.1:8080/invoices") {
+            bearerAuth(token)
+            setBody(invoice)
+            contentType(ContentType.Application.Json)
+        }
+        return response.status
     }
 
     suspend fun addCategory(nombre:String): HttpStatusCode {

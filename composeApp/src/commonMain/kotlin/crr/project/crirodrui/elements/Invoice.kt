@@ -12,7 +12,7 @@ import java.time.format.DateTimeFormatter
 
 @Serializable
 data class Invoice(
-    val idInvoice: Int? = null,
+    val idInvoice: Int? = 0,
     val numSerie: Int? = null,
     @Serializable(with = LocalDateTimeSerializer::class)
     val fechaEmision: LocalDateTime? = null,

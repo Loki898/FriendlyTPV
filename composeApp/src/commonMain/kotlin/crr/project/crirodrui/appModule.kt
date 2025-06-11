@@ -8,6 +8,7 @@ import crr.cliente.crirodrui.viewmodels.CategoryViewModel
 import crr.cliente.crirodrui.viewmodels.ProductViewModel
 import crr.cliente.crirodrui.viewmodels.UserViewModel
 import crr.project.crirodrui.viewmodels.InvoiceViewModel
+import crr.project.crirodrui.viewmodels.TableEditorViewModel
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
@@ -20,5 +21,6 @@ val appModule = module {
     viewModel { CategoryViewModel(get()) }
     viewModel { ProductViewModel(get(),get()) }
     viewModel { InvoiceViewModel(get()) }
+    viewModel { TableEditorViewModel() }
 }
 

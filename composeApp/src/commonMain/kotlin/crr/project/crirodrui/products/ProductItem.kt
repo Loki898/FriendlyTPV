@@ -28,22 +28,7 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import kotlin.io.encoding.ExperimentalEncodingApi
 
-/*@OptIn(ExperimentalEncodingApi::class)
-@Composable
-fun ProductItem(
-    item: Producto,
-    vm: CategoryViewModel = koinViewModel(),
-    /*onClick: () -> Unit,
-    vmUser: UserViewModel = koinViewModel(),
-    userRep: UserRepository = UserRepository()*/
-) {
-    Box(modifier = Modifier.fillMaxSize().background(Color.White)) {
-        Row {
-            item.nombre?.let { Text(it) }
-        }
-    }
-    Spacer(modifier = Modifier.height(8.dp))
-}*/
+
 @Composable
 fun ProductItem(
     item: Producto,
@@ -64,9 +49,7 @@ fun ProductItem(
             color = Color.Black
         )
 
-        IconButton(onClick = {
-            // Por ahora no hace nada
-        }) {
+        IconButton(onClick = {}) {
             Icon(
                 imageVector = Icons.Filled.Delete,
                 contentDescription = "Eliminar producto",

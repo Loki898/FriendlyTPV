@@ -22,33 +22,35 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import crr.project.crirodrui.viewmodels.TableEditorViewModel
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
+import org.koin.compose.viewmodel.koinViewModel
 import java.io.File
 import kotlin.math.roundToInt
 import kotlin.random.Random
 
 @Composable
-fun TableEditorScreen() {
-    var tables by remember { mutableStateOf(generateInitialTables()) }
-    var selectedTable by remember { mutableStateOf<Table?>(null) }
-    var isEditMode by remember { mutableStateOf(false) }
-    var canvasSize by remember { mutableStateOf(IntSize(0, 0)) }
+fun TableEditorScreen(viewModel: TableEditorViewModel = koinViewModel()) {
+    val tables = viewModel.tables.collectAsState()
+    val selectedTable = viewModel.selectedTable.collectAsState()
+    val isEditMode = viewModel.isEditMode.collectAsState()
+    val canvasSize = viewModel.canvasSize.collectAsState()
 
     Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-            Button(onClick = { isEditMode = !isEditMode }) {
-                Text(if (isEditMode) "Salir del modo edición" else "Modo edición")
+            Button(onClick = { viewModel.toggleEditMode() }) {
+                Text(if (isEditMode.value) "Salir del modo edición" else "Modo edición")
             }
             Button(onClick = {
                 val file = File("layout.json")
-                saveTablesToFile(file, tables)
+                viewModel.saveTablesToFile(file)
             }) {
                 Text("Guardar")
             }
             Button(onClick = {
                 val file = File("layout.json")
-                tables = loadTablesFromFile(file)
+                viewModel.loadTablesFromFile(file)
             }) {
                 Text("Cargar")
             }
@@ -56,17 +58,10 @@ fun TableEditorScreen() {
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        if (isEditMode) {
+        if (isEditMode.value) {
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 listOf("Mesa Cuadrada", "Mesa Redonda").forEach { type ->
-                    Button(onClick = {
-                        val newTable = Table(
-                            id = Random.nextInt(),
-                            position = Offset(100f, 100f),
-                            name = type
-                        )
-                        tables = tables + newTable
-                    }) {
+                    Button(onClick = { viewModel.addTable(type) }) {
                         Text(type)
                     }
                 }
@@ -78,45 +73,25 @@ fun TableEditorScreen() {
         Box(modifier = Modifier
             .fillMaxSize()
             .background(Color(0xFFEFEFEF))
-            .onGloballyPositioned { layoutCoordinates ->
-                canvasSize = layoutCoordinates.size
-            }) {
-            tables.forEach { table ->
+            .onGloballyPositioned { coordinates ->
+                viewModel.updateCanvasSize(coordinates.size)
+            }
+        ) {
+            tables.value.forEach { table ->
                 DraggableTable(
                     table = table,
-                    isEditMode = isEditMode,
-                    onClick = { selectedTable = table },
-                    onDragEnd = { newPos ->
-                        tables = tables.map {
-                            if (it.id == table.id) it.copy(position = newPos) else it
-                        }
-                    },
-                    onDelete = {
-                        tables = tables.filterNot { it.id == table.id }
-                    },
-                    maxWidth = canvasSize.width.toFloat(),
-                    maxHeight = canvasSize.height.toFloat()
+                    isEditMode = isEditMode.value,
+                    onClick = { viewModel.selectTable(table) },
+                    onDragEnd = { newPos -> viewModel.updateTablePosition(table.id, newPos) },
+                    onDelete = { viewModel.deleteTable(table.id) },
+                    maxWidth = canvasSize.value.width.toFloat(),
+                    maxHeight = canvasSize.value.height.toFloat()
                 )
-            }
-        }
-
-        selectedTable?.let { table ->
-            Dialog(onDismissRequest = { selectedTable = null }) {
-                Surface(shape = RoundedCornerShape(8.dp), color = Color.White) {
-                    Column(modifier = Modifier.padding(16.dp)) {
-                        Text("Factura de ${table.name}", style = MaterialTheme.typography.headlineSmall)
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Text("- Coca Cola\n- Hamburguesa\n- Café")
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Button(onClick = { selectedTable = null }) {
-                            Text("Cerrar")
-                        }
-                    }
-                }
             }
         }
     }
 }
+
 
 @Composable
 fun DraggableTable(
@@ -130,7 +105,6 @@ fun DraggableTable(
 ) {
     var offset by remember { mutableStateOf(table.position) }
 
-    // 👇 Esto es clave para recargar bien desde JSON
     LaunchedEffect(table) {
         offset = table.position
     }

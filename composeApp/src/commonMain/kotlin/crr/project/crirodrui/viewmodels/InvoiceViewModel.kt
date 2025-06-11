@@ -22,6 +22,11 @@ class InvoiceViewModel(val invoiceRepository: InvoiceRepository) : ViewModel() {
     var total_price = MutableStateFlow(0.0)
     var allInvoices = MutableStateFlow(listOf<Invoice>())
     var selectedAll=MutableStateFlow(Invoice())
+    var idActualInvoice = MutableStateFlow(1)
+
+    init {
+        getAllInvoices()
+    }
 
     fun addLine(line: LineDetail2) {
         val id = selected.value.idInvoice
@@ -30,19 +35,30 @@ class InvoiceViewModel(val invoiceRepository: InvoiceRepository) : ViewModel() {
             sales_lines.update { it + line }
             salesLinesTotal.update { it + line }
             calculateTotal()
-        } else {
-            println("⚠️ No se puede añadir la línea: id_invoice o precio_uni es null.")
         }
     }
     fun removeLine(line: LineDetail2) {
         sales_lines.update { it - line }
         calculateTotal()
     }
+    fun addOneToId(){
+        idActualInvoice.value++
+    }
+    fun sustractOneToId(){
+        idActualInvoice.value--
+    }
     fun addInvoice(invoice: Invoice) {
         invoices.update { it + invoice }
         selected.value=invoice
     }
 
+    fun removeActualInvoice(invoice: Invoice) {
+        invoices.update { it - invoice }
+        salesLinesTotal.update {
+            salesLinesTotal.value-sales_lines.value
+        }
+        loadLines(Invoice())
+    }
 
     private fun calculateTotal(){
         total_price.value = sales_lines.value.sumOf { it.lineDetail.precio_uni ?: 0.0 }
@@ -54,6 +70,18 @@ class InvoiceViewModel(val invoiceRepository: InvoiceRepository) : ViewModel() {
             it.lineDetail.venda_id == invoice.idInvoice
         }
         calculateTotal()
+    }
+
+    fun deleteLines(invoice: Invoice){
+      salesLinesTotal.value = salesLinesTotal.value.filter {
+          it.lineDetail.venda_id != invoice.idInvoice
+      }
+    }
+    fun sendInvoice(invoice: Invoice) {
+        viewModelScope.launch {
+            invoiceRepository.sendInvoice(invoice)
+            getAllInvoices()
+        }
     }
 
     fun getAllInvoices(){
